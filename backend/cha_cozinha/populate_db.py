@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from src.main import app
 from src.models.item import Item, db
 
-# Lista de itens fornecida pelo usuário
+# Lista de itens 
 itens_lista = [
     # Cozinha
     ("Abridor de garrafa, lata e saca-rolhas", "Cozinha"),
@@ -88,17 +88,17 @@ itens_lista = [
 
 def populate_database():
     with app.app_context():
-        # Limpar dados existentes
-        Item.query.delete()
-        
-        # Adicionar todos os itens
+        # NÃO apagar itens existentes! Apenas adicionar novos.
+        novos_itens = 0
         for nome, categoria in itens_lista:
-            item = Item(nome=nome, categoria=categoria)
-            db.session.add(item)
+            # Verificar se o item já existe
+            if not Item.query.filter_by(nome=nome).first():
+                item = Item(nome=nome, categoria=categoria)
+                db.session.add(item)
+                novos_itens += 1
         
         db.session.commit()
-        print(f"Banco de dados populado com {len(itens_lista)} itens!")
+        print(f"{novos_itens} novos itens adicionados! Itens já existentes foram preservados.")
 
 if __name__ == '__main__':
     populate_database()
-
