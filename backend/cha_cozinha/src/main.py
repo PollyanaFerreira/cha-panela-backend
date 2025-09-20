@@ -1,9 +1,8 @@
 import os
 import sys
-# DON'T CHANGE THIS !!!
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify
 from flask_cors import CORS
 from src.models.user import db
 from src.models.item import Item
@@ -19,7 +18,6 @@ CORS(app)
 app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(item_bp, url_prefix='/api')
 
-# uncomment if you need to use database
 db_path = os.path.join(os.path.dirname(__file__), 'database', 'app.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -29,12 +27,22 @@ print(f"Database exists: {os.path.exists(db_path)}")
 db.init_app(app)
 with app.app_context():
     db.create_all()
+    
     # Verificar quantos itens estão escolhidos ao iniciar
     try:
         escolhidos = Item.query.filter_by(escolhido=True).count()
         print(f"Itens escolhidos ao iniciar: {escolhidos}")
     except Exception as e:
         print(f"Erro ao verificar itens: {e}")
+
+@app.route('/repopulate', methods=['POST'])
+def repopulate_db():
+    try:
+        from populate_db import populate_database
+        populate_database()
+        return jsonify({"message": "Banco recriado com sucesso com os novos itens!"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
