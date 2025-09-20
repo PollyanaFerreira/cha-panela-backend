@@ -79,6 +79,7 @@ itens_lista = [
     ("Edredon", "Quarto"),
     ("Jogo de lençol (Queen)", "Quarto"),
     ("Tapete para quarto", "Quarto"),
+    ("Cabides", "Quarto"),
     
     # Sala
     ("Almofada", "Sala"),
