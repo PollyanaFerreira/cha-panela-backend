@@ -3,6 +3,6 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "python backend/cha_cozinha/src/main.py"
+    "startCommand": "python src/main.py"
   }
 }
