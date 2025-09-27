@@ -49,7 +49,7 @@ itens_lista = [
     ("Ramequim", "Cozinha"),
     ("Ralador", "Cozinha"),
     ("Rolo de massa", "Cozinha"),
-    ("Saleiro e pimenteiro", "Cozinha"),
+    ("Porta condimento", "Cozinha"),
     ("Sanduicheira", "Cozinha"),
     ("Taças de vinho ou cerveja", "Cozinha"),
     ("Tábua de corte", "Cozinha"),
@@ -91,11 +91,15 @@ def populate_database():
         # NÃO apagar itens existentes! Apenas adicionar novos.
         novos_itens = 0
         for nome, categoria in itens_lista:
-            # Verificar se o item já existe
-            if not Item.query.filter_by(nome=nome).first():
+            item = Item.query.filter_by(nome=nome).first()
+
+            if item:
+                item.nome = nome
+                item.categoria = categoria
+            else:
                 item = Item(nome=nome, categoria=categoria)
                 db.session.add(item)
-                novos_itens += 1
+            
         
         db.session.commit()
         print(f"{novos_itens} novos itens adicionados! Itens já existentes foram preservados.")
