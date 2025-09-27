@@ -51,6 +51,7 @@ itens_lista = [
     ("Rolo de massa", "Cozinha"),
     ("Porta condimento", "Cozinha"),
     ("Sanduicheira", "Cozinha"),
+    ("Porta condimentos", "Cozinha"
     ("Taças de vinho ou cerveja", "Cozinha"),
     ("Tábua de corte", "Cozinha"),
     ("Tapete para cozinha", "Cozinha"),
